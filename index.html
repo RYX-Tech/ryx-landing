@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RYX – The Caribbean Grid</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg-dark: #0a1a2f;
+      --bg-section: #03101f;
+      --bg-light: #0f2238;
+      --accent: #00d4ff;
+      --text-main: #ffffff;
+      --text-muted: #d0d8e5;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 32px 16px 64px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+    .logo {
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      font-size: 18px;
+    }
+    .nav {
+      display: flex;
+      gap: 20px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .nav a:hover { color: var(--accent); }
+
+    /* Hero */
+    .hero {
+      padding: 80px 0 96px;
+      text-align: center;
+      background: radial-gradient(circle at top, #12345a 0, #03101f 55%, #020812 100%);
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -200px;
+      background-image: linear-gradient(
+          rgba(0, 212, 255, 0.08) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(0, 212, 255, 0.08) 1px,
+          transparent 1px
+        );
+      background-size: 80px 80px;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+    .hero-kicker {
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 11px;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-size: clamp(40px, 6vw, 64px);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .hero-sub {
+      font-size: 22px;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+    .hero-desc {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+    .hero-ctas {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      border-radius: 999px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.18s ease-out;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+    }
+    .btn-primary:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: transparent;
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .btn-secondary:hover {
+      background: rgba(0, 212, 255, 0.08);
+      transform: translateY(-1px);
+    }
+
+    /* Sections */
+    section {
+      margin-top: 64px;
+      padding: 32px 24px;
+      background: var(--bg-section);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .section-header {
+      margin-bottom: 24px;
+    }
+    .section-kicker {
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 11px;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .section-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 640px;
+    }
+
+    /* Grid */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 16px;
+    }
+    .card {
+      background: var(--bg-light);
+      border-radius: 16px;
+      padding: 18px 18px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: rgba(0, 212, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      font-size: 18px;
+      color: var(--accent);
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .card-text {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Impact list */
+    .impact-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .impact-item {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .impact-bullet {
+      color: var(--accent);
+      margin-top: 2px;
+    }
+
+    /* Founder */
+    .founder {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr);
+      gap: 24px;
+      align-items: center;
+    }
+    .founder-photo {
+      width: 100%;
+      max-width: 220px;
+      aspect-ratio: 3 / 4;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #00d4ff33, #ffffff11);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      text-align: center;
+      padding: 12px;
+    }
+    .founder-text {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .founder-name {
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .founder-role {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Final CTA */
+    .cta-center {
+      text-align: center;
+    }
+    .cta-center .section-desc {
+      margin: 0 auto 20px;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .footer-links {
+      display: flex;
+      gap: 16px;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    @media (max-width: 720px) {
+      header { flex-direction: column; gap: 12px; align-items: flex-start; }
+      .hero { padding: 64px 0 72px; }
+      section { padding: 24px 18px; }
+      .founder { grid-template-columns: 1fr; }
+      .founder-photo { margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="logo">RYX</div>
+      <nav class="nav">
+        <a href="#mission">Mission</a>
+        <a href="#grid">The Caribbean Grid</a>
+        <a href="#products">iRYX Suite</a>
+        <a href="#impact">Impact</a>
+        <a href="#founder">Founder</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero" id="top">
+        <div class="hero-inner">
+          <div class="hero-kicker">Digital infrastructure for the Caribbean</div>
+          <h1 class="hero-title">RYX</h1>
+          <div class="hero-sub">The Caribbean Grid</div>
+          <p class="hero-desc">
+            Building the unified digital backbone that connects islands, clouds, networks, and data into one resilient ecosystem.
+          </p>
+          <div class="hero-ctas">
+            <button class="btn btn-primary">Join the Pilot Program</button>
+            <button class="btn btn-secondary">Request Cloud Interconnect Access</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- MISSION -->
+      <section id="mission">
+        <div class="section-header">
+          <div class="section-kicker">Mission</div>
+          <h2 class="section-title">Modernizing the Caribbean’s digital backbone</h2>
+          <p class="section-desc">
+            RYX exists to close the gap between subsea cables, data centers, and the cloud. We unify fragmented networks,
+            reduce latency, and enable sovereign, high‑performance access to global platforms—so Caribbean nations can build,
+            scale, and own their digital future.
+          </p>
+        </div>
+      </section>
+
+      <!-- THE CARIBBEAN GRID -->
+      <section id="grid">
+        <div class="section-header">
+          <div class="section-kicker">The Caribbean Grid</div>
+          <h2 class="section-title">From isolated islands to a unified fabric</h2>
+          <p class="section-desc">
+            Today, traffic often hairpins through distant regions, adding cost, latency, and fragility. The Caribbean Grid
+            is the missing performance and interconnect layer that keeps traffic local when it should be local, and optimally
+            routed when it must be global.
+          </p>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-icon">◎</div>
+            <div class="card-title">Unified Connectivity</div>
+            <div class="card-text">
+              A neutral interconnect fabric that links carriers, ISPs, clouds, and enterprises across the region.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">⚡</div>
+            <div class="card-title">Regional Performance</div>
+            <div class="card-text">
+              Keep traffic in‑region, cut round‑trip times, and deliver experiences that feel local, not distant.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🛡️</div>
+            <div class="card-title">Resilient Infrastructure</div>
+            <div class="card-text">
+              Architected for hurricanes, outages, and geopolitical risk—with redundancy built into the fabric.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRODUCT SUITE -->
+      <section id="products">
+        <div class="section-header">
+          <div class="section-kicker">iRYX Suite</div>
+          <h2 class="section-title">iRYX — the interconnect layer for the Caribbean</h2>
+          <p class="section-desc">
+            iRYX is the technology suite that powers the Caribbean Grid: a set of modular services that can be adopted
+            independently or as a unified platform.
+          </p>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-icon">◎</div>
+            <div class="card-title">iRYX IX — Internet Exchange</div>
+            <div class="card-text">
+              A neutral IX fabric that keeps regional traffic local, reduces transit costs, and improves reliability.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🖥️</div>
+            <div class="card-title">iRYX Edge — Edge Compute</div>
+            <div class="card-text">
+              Run workloads closer to users across the Caribbean, with low‑latency execution and regional data residency.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">☁️</div>
+            <div class="card-title">iRYX Cloud — Cloud Interconnect</div>
+            <div class="card-text">
+              High‑performance, sovereign‑aware connectivity into major cloud providers from within the region.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🌐</div>
+            <div class="card-title">iRYX CDN — Content Delivery</div>
+            <div class="card-text">
+              Regional content delivery that keeps media, apps, and APIs fast and reliable for Caribbean users.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🛡️</div>
+            <div class="card-title">iRYX Secure — Cyber Resilience</div>
+            <div class="card-text">
+              DDoS mitigation, WAF, and security controls tuned for regional threats and regulatory realities.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">▤</div>
+            <div class="card-title">iRYX Mesh — Multi‑Version Deploy</div>
+            <div class="card-text">
+              Safely roll out new versions across islands, test in production, and fail over without losing control.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- IMPACT -->
+      <section id="impact">
+        <div class="section-header">
+          <div class="section-kicker">Impact</div>
+          <h2 class="section-title">Why this matters now</h2>
+          <p class="section-desc">
+            The Caribbean is too important—and too vulnerable—to rely on distant infrastructure paths. RYX is designed to
+            make the region faster, more resilient, and more sovereign by default.
+          </p>
+        </div>
+        <div class="impact-list">
+          <div class="impact-item">
+            <span class="impact-bullet">•</span>
+            <span>Reduce latency for users, businesses, and governments across the region.</span>
+          </div>
+          <div class="impact-item">
+            <span class="impact-bullet">•</span>
+            <span>Keep more traffic and data flows in‑region where policy and sovereignty require it.</span>
+          </div>
+          <div class="impact-item">
+            <span class="impact-bullet">•</span>
+            <span>Improve resilience against cable cuts, outages, and extreme weather events.</span>
+          </div>
+          <div class="impact-item">
+            <span class="impact-bullet">•</span>
+            <span>Give local operators and governments more control over how traffic is routed.</span>
+          </div>
+          <div class="impact-item">
+            <span class="impact-bullet">•</span>
+            <span>Enable new digital services that assume low‑latency, high‑reliability connectivity.</span>
+          </div>
+          <div class="impact-item">
+            <span class="impact-bullet">•</span>
+            <span>Attract investment and innovation by modernizing the region’s digital foundation.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOUNDER -->
+      <section id="founder">
+        <div class="section-header">
+          <div class="section-kicker">Founder</div>
+          <h2 class="section-title">A founder obsessed with the region’s future</h2>
+        </div>
+        <div class="founder">
+          <div class="founder-photo">
+            Founder photo / avatar placeholder
+          </div>
+          <div>
+            <p class="founder-text">
+              RYX was born from a simple observation: the Caribbean has world‑class people, culture, and potential—but its
+              digital infrastructure still behaves like an afterthought. Latency, fragility, and dependence on distant
+              routes slow down everything from fintech to government services.
+            </p>
+            <p class="founder-text" style="margin-top: 10px;">
+              I’m building RYX to change that. The Caribbean deserves a first‑class digital backbone: one that is fast,
+              resilient, and aligned with the region’s own priorities—not just those of distant hubs.
+            </p>
+            <div class="founder-name">LaToya</div>
+            <div class="founder-role">Founder &amp; CEO, RYX</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FINAL CTA -->
+      <section id="cta">
+        <div class="cta-center">
+          <div class="section-header">
+            <div class="section-kicker">Next steps</div>
+            <h2 class="section-title">Be part of the Caribbean’s digital future</h2>
+            <p class="section-desc">
+              We’re assembling partners, operators, and early adopters who care about building a stronger regional grid.
+              If that’s you, let’s talk.
+            </p>
+          </div>
+          <div class="hero-ctas">
+            <button class="btn btn-primary">Join the Pilot Program</button>
+            <button class="btn btn-secondary">Request Cloud Interconnect Access</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>© 2026 RYX. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="#top">Back to top</a>
+        <a href="#products">iRYX Suite</a>
+        <a href="#founder">Founder</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
