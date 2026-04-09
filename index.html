@@ -185,7 +185,7 @@
           <div class="tech-services">Cloud compute · Content delivery · DNS · Traffic management</div>
         </div>
       </div>
-      <p style="font-size: 13px; color: var(--text-muted); margin-top: 20px;">Our approach ensures regional flexibility, and resilience — eliminating future failures across Caribbean markets.</p>
+      <p style="font-size: 13px; color: var(--text-muted); margin-top: 20px;">Our multi-cloud approach ensures redundancy, regional flexibility, and resilience — eliminating single points of failure across Caribbean markets.</p>
     </section>
 
     <section id="builtfor">
@@ -358,20 +358,22 @@
     const form = document.getElementById(formId);
     const success = document.getElementById(successId);
     if (!form || !success) return;
+
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
       const btn = form.querySelector('button[type="submit"]');
       const orig = btn.textContent;
       btn.textContent = 'Sending...';
       btn.disabled = true;
-      const action = form.getAttribute('action');
-      if (action.includes('YOUR_')) {
-        form.style.display = 'none';
-        success.style.display = 'block';
-        return;
-      }
+
       try {
-        const res = await fetch(action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
+        const data = new FormData(form);
+        const res = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(data).toString()
+        });
+
         if (res.ok) {
           form.style.display = 'none';
           success.style.display = 'block';
@@ -387,6 +389,7 @@
       }
     });
   }
+
   handleForm('pilot-form', 'pilot-success');
   handleForm('partner-form', 'partner-success');
 </script>
